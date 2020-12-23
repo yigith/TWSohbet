@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        <h1>Sohbet</h1>
+        <form id="frmChat">
+            <input type="text" id="message" required />
+            <button>Send</button>
+        </form>
+
+        <ul id="messages"></ul>
+    </div>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        var chat = $.connection.chatHub;
+
+        // sunucudan yeni mesaj geldiğinde onu karşılayacak metot
+        chat.client.newMessage = function (username, message) {
+            var li = $("<li/>").text(username + ": " + message);
+            $("ul#messages").append(li);
+        };
+
+        var username = prompt("Username:");
+
+        // bağlantıyı başlat ve bittiğinde..
+        $.connection.hub.start().done(function () {
+            $("#frmChat").submit(function (e) {
+                e.preventDefault();
+
+                chat.server.sendMessage(username, $("#message").val());
+                $("#message").val("");
+            });
+        });
+
+
+    </script>
+</body>
+</html>
