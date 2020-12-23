@@ -1,0 +1,15 @@
+﻿body {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+
+@keyframes anim1 {
+    from { font-size: 0px; }
+    to { font-size: 1rem; }
+}
+
+li {
+    margin: .5rem 0;
+    animation: anim1 .5s;
+}

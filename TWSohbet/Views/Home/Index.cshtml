@@ -9,6 +9,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="~/Content/styles.css" rel="stylesheet" />
 </head>
 <body>
     <div> 
@@ -26,15 +29,21 @@
     <script src="~/signalr/hubs"></script>
 
     <script>
+        if (!localStorage["username"]) {
+            localStorage["username"] = prompt("Username:");
+        }
+
+        var username = localStorage["username"];
+
+
         var chat = $.connection.chatHub;
 
         // sunucudan yeni mesaj geldiğinde onu karşılayacak metot
         chat.client.newMessage = function (username, message) {
             var li = $("<li/>").text(username + ": " + message);
-            $("ul#messages").append(li);
+            $("ul#messages").prepend(li);
         };
 
-        var username = prompt("Username:");
 
         // bağlantıyı başlat ve bittiğinde..
         $.connection.hub.start().done(function () {
